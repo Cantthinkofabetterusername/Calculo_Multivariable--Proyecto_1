@@ -4,9 +4,9 @@ from tabulate import tabulate
 
 x = sp.symbols('x')
 
-def MetodoBiseccion(Funcion,xizq,xder,tolerancia=1e-6,MaxPasos=100):
+def MetodoBiseccion(Funcion,xizq,xder,tolerancia=1e-6,MaxPasos=100,VariableIndependiente=x):
 
-    Funcion = sp.lambdify(x,Funcion) #Facilite la evaluación numérica de la función
+    Funcion = sp.lambdify(VariableIndependiente,Funcion) #Facilite la evaluación numérica de la función
     fa =Funcion(xizq)
     fb =Funcion(xder)
 
@@ -54,19 +54,21 @@ def MetodoBiseccion(Funcion,xizq,xder,tolerancia=1e-6,MaxPasos=100):
                    numalign='center'))
 
     #Resumen de resultados
-    print('\n Después de {:3d} pasos, la raíz aproximada con Bisección es:  {:18.15f} \n'. format(Pasos,xc))
+    print('\n Después de {:3d} pasos, la raíz aproximada con Bisección es: {:18.15f} \n'. format(Pasos,xc))
+
+    return xc
 
 
-def MetodoNewton(Funcion,xest=0.0,TOL=1E-10,MaxPasos=100):
+def MetodoNewton(Funcion,xest=0.0,TOL=1E-10,MaxPasos=100,VariableIndependiente=x):
 
-    Derivada = sp.diff(Funcion,x)   #Derivada con sympy
+    Derivada = sp.diff(Funcion,VariableIndependiente)   #Derivada con sympy
     print()
     print('La función derivada obtenida con sympy es: ')
     sp.pprint(Derivada)
     print()
 
-    Funcion = sp.lambdify(x,Funcion) #Facilite la evaluación numérica de la función
-    Derivada = sp.lambdify(x,Derivada) #Facilite la evaluación numérica de la derivada
+    Funcion = sp.lambdify(VariableIndependiente,Funcion) #Facilite la evaluación numérica de la función
+    Derivada = sp.lambdify(VariableIndependiente,Derivada) #Facilite la evaluación numérica de la derivada
 
     Pasos = 0
     Error = 2
